@@ -1,0 +1,14 @@
+{
+  "dependencies": [
+    "catch2",
+    "eigen3",
+    "mpi",
+    "openblas",
+    "stb",
+    {
+      "name": "opencv4",
+      "features": ["dnn", "highgui"],
+      "default-features": false
+    }
+  ]
+}
