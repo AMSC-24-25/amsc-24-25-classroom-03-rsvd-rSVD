@@ -1,12 +1,18 @@
 {
   "dependencies": [
+    "catch2",
     "eigen3",
+    "mpi",
+    "openblas",
     {
-      "name": "catch2",
-      "version>=": "3.7.1"
+      "name": "opencv4",
+      "default-features": false,
+      "features": [
+        "dnn",
+        "highgui"
+      ]
     },
-    {
-      "name": "mpi"
-  }
+    "stb",
+    "gtest"
   ]
 }

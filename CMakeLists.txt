@@ -1,34 +1,26 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.20)
 project(03_rsvd_team_3)
 
 set(CMAKE_CXX_STANDARD 20)
-
-include_directories(${CMAKE_SOURCE_DIR}/src)
+enable_testing()
 
 find_package(Eigen3 CONFIG REQUIRED)
-add_executable(main src/main.cpp
-        src/RandomizedSVD.h
-)
-target_link_libraries(main PRIVATE Eigen3::Eigen)
-
-
-find_package(Catch2 REQUIRED)
-add_executable(UnitTests
-        tests/test_rsvd.cpp)
-target_link_libraries(UnitTests PRIVATE Catch2::Catch2WithMain)
-
-add_executable(BenchmarkTests benchmarks/benchmark_main.cpp
-)
-target_link_libraries(BenchmarkTests PRIVATE Catch2::Catch2WithMain)
-
-
+find_package(Catch2 CONFIG REQUIRED)
 find_package(MPI REQUIRED)
-include_directories(SYSTEM ${MPI_INCLUDE_DIRS})
-target_link_libraries(main PRIVATE MPI::MPI_CXX)
-target_link_libraries(UnitTests PRIVATE MPI::MPI_CXX)
-target_link_libraries(BenchmarkTests PRIVATE MPI::MPI_CXX)
+find_package(OpenMP REQUIRED COMPONENTS CXX)
+find_package(OpenBLAS CONFIG REQUIRED)
+find_package(OpenCV CONFIG REQUIRED)
 
+include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(SYSTEM ${MPI_INCLUDE_DIRS})
 
 include(CTest)
 include(Catch)
-catch_discover_tests(UnitTests)
+
+# Add MNIST data directory path
+set(MNIST_DATA_DIR "${CMAKE_SOURCE_DIR}/MNIST_data")
+
+add_subdirectory(tests)
+add_subdirectory(benchmarks)
+add_subdirectory(profiling)
+add_subdirectory(applications)
