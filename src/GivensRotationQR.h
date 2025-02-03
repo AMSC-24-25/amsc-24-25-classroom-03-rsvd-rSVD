@@ -56,6 +56,14 @@ namespace Eigen {
         /**
          * @brief Access the orthogonal matrix Q
          * @return The Q matrix
+         * //@note here const is fine, since you are retruning a reference.
+         * Here it may be useful if you want to access the object and not just copy it to another variable:
+         * for instance 
+         * GivensRotationQR qr;
+         * ..
+         * auto x=qr.compute(matrix).matrixQ()(1,1);// access an element of Q
+         * 
+         * However, a part this particular cases, it is not useful to return a const reference.
          */
         const DenseMat& matrixQ() const { return m_matrixQ; }
 

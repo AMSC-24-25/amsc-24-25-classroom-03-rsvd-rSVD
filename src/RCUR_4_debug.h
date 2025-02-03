@@ -49,7 +49,9 @@ MatrixXd sub_iterations(const MatrixXd &A, MatrixXd Y, int q) {
             throw invalid_argument("Dimension mismatch: A.rows() != Y.rows()");
         }
         Y = A * Y;
-
+    //@note I understand that you want to do intermediate checks, but if you want to use the Eigen at full
+    // blast you should exploit the laxy evaluation of expression templates:
+    // return A.transpose() * (A * A.transpose()).householderQ();
     }
     return Y;
 }
@@ -74,7 +76,8 @@ pair<MatrixXd, MatrixXd> rqb(const MatrixXd &A, int k, int p, int q) {
 
     // Step 10: Project to low-dimensional space
     MatrixXd B = Q.transpose() * A;
-
+//@note same here (and in the other places).
+// I understand, however, that by grouping all operations the code is more difficult to read.
     return {Q, B};
 }
 

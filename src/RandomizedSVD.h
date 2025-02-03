@@ -35,7 +35,7 @@ namespace Eigen {
          * @param matrix The input matrix to decompose
          * @param rank Desired rank of the approximation
          * @param powerIterations Number of power iterations for accuracy (default: 2)
-         * @return Reference to this RSVD object
+         * @return Reference to this RSVD object//@note what's the use of returning *this object?
          */
         RandomizedSVD &compute(const MatrixType &matrix, Index rank, Index powerIterations = 2) {
             randomProjection(matrix, rank, powerIterations);
@@ -45,6 +45,9 @@ namespace Eigen {
         /**
          * @brief Get the singular values
          * @return A vector containing the singular values
+         * @note I do not know why (you are not the only ones) you return a const value. A returned value is a temporary object, so it is not possible to modify it in any case.
+         * It is an rvalue. Declaring it const may only block move semantic, so there is no benefit, on the contrary!
+         * If you return a value, just return a value. Let the compiler to its job.
          */
         const DenseVector &singularValues() const { return m_singularValues; }
 
@@ -71,7 +74,7 @@ namespace Eigen {
         DenseMatrix generateRandomMatrix(Index rows, Index cols) {
             std::normal_distribution<Scalar> dist(0.0, 1.0);
             std::mt19937 m_gen;
-            return DenseMatrix::NullaryExpr(rows, cols, [&]() { return dist(m_gen); });
+            return DenseMatrix::NullaryExpr(rows, cols, [&]() { return dist(m_gen); });//@note nice use of Eigen tools.
         }
 
         /**
